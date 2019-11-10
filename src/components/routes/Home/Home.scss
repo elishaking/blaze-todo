@@ -1,0 +1,33 @@
+.home {
+  .create-todo {
+    text-align: center;
+
+    input {
+      outline: none;
+      border: none;
+      padding: 1em 2em;
+      font-family: inherit;
+      transition: 0.3s ease-in-out;
+    }
+
+    input[type=text] {
+      padding-left: 0.3em;
+      border-bottom: 1px solid #2b4578;
+      width: 70vw;
+      max-width: 400px;
+      margin-right: 2em;
+    }
+
+    input[type=text]:focus {
+      border-width: 2px;
+    }
+
+    input[type=submit] {
+      color: white;
+      background-color: #2b4578;
+      border-radius: 5px;
+      box-shadow: 0 0 30px rgba($color: #000000, $alpha: .2);
+      cursor: pointer;
+    }
+  }
+}
