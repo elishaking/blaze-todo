@@ -26,13 +26,17 @@ export default class Home extends Component {
       date: Date.now()
     };
 
+    todos.unshift(newTodo);
+
     this.setState({
-      todos: [
-        newTodo,
-        ...todos
-      ],
+      todos,
       newTodoText: ''
-    }, () => document.getElementById('newTodoText').value = "");
+    }, () => {
+      document.getElementById('newTodoText').value = "";
+      setTimeout(() => {
+        document.getElementById(`todo-${this.state.todos.length - 1}`).classList.add("show")
+      }, 10);
+    });
   };
 
   toggleDone = (index) => {
@@ -45,7 +49,6 @@ export default class Home extends Component {
   deleteTodo = (index) => {
     const { todos } = this.state;
     todos.splice(index, 1);
-
     this.setState({ todos });
   };
 
@@ -68,7 +71,7 @@ export default class Home extends Component {
         <div className="todos">
           {
             todos.map((todo, index) => (
-              <div key={index} className="todo">
+              <div key={index} id={`todo-${index}`} className="todo">
                 <div>
                   <input type="checkbox"
                     checked={todo.done}

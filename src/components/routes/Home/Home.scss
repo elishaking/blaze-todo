@@ -4,6 +4,7 @@
 
     #form {
       display: flex;
+      justify-content: center;
 
       input {
         outline: none;
@@ -64,11 +65,18 @@
       position: relative;
       justify-content: space-between;
       align-items: center;
-      padding: 1em 2em;
-      border: 0.7px solid rgba($color: #2b4578, $alpha: .2);
       border-radius: 5px;
       background-color: rgba($color: #2b4578, $alpha: .1);
+
+      height: 0;
+      opacity: 0;
+
+      padding: 1em 2em;
       margin-bottom: 1em;
+      border: 0.7px solid rgba($color: #2b4578, $alpha: .2);
+      overflow: hidden;
+
+      transition: all 0.3s ease-out;
 
       div {
         display: flex;
@@ -110,6 +118,11 @@
       .close:hover {
         opacity: 1;
       }
+    }
+
+    .show {
+      height: 4em;
+      opacity: 1;
     }
   }
 }
