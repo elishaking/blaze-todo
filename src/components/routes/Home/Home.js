@@ -20,7 +20,7 @@ export default class Home extends Component {
 
     const newTodo = {
       text: newTodoText,
-      done: false,
+      done: true,
       date: Date.now()
     };
 
@@ -32,6 +32,13 @@ export default class Home extends Component {
       newTodoText: ''
     }, () => document.getElementById('newTodoText').value = "");
   };
+
+  toggleDone = (index) => {
+    const { todos } = this.state;
+
+    todos[index].done = !todos[index].done;
+    this.setState({ todos });
+  }
 
   render() {
     const { todos } = this.state;
@@ -54,7 +61,10 @@ export default class Home extends Component {
             todos.map((todo, index) => (
               <div key={index} className="todo">
                 <div>
-                  <input type="checkbox" />
+                  <input type="checkbox"
+                    checked={todo.done}
+                    onChange={(e) => { this.toggleDone(index) }} />
+
                   <p>{todo.text}</p>
                 </div>
                 <small>{new Date(todo.date).toLocaleTimeString()}</small>
