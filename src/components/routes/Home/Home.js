@@ -55,7 +55,7 @@ export default class Home extends Component {
     return (
       <div className="home container">
         <div className="create-todo">
-          <form onSubmit={this.addTodo}>
+          <form id="form" onSubmit={this.addTodo}>
             <input id="newTodoText" type="text"
               name="newTodoText"
               placeholder="New Todo"
