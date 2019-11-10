@@ -18,9 +18,11 @@ export default class Home extends Component {
 
     const { newTodoText, todos } = this.state;
 
+    if (newTodoText === '') return;
+
     const newTodo = {
       text: newTodoText,
-      done: true,
+      done: false,
       date: Date.now()
     };
 
@@ -39,6 +41,13 @@ export default class Home extends Component {
     todos[index].done = !todos[index].done;
     this.setState({ todos });
   }
+
+  deleteTodo = (index) => {
+    const { todos } = this.state;
+    todos.splice(index, 1);
+
+    this.setState({ todos });
+  };
 
   render() {
     const { todos } = this.state;
@@ -66,6 +75,8 @@ export default class Home extends Component {
                     onChange={(e) => { this.toggleDone(index) }} />
 
                   <p>{todo.text}</p>
+
+                  <p className="close" onClick={(e) => { this.deleteTodo(index) }}>x</p>
                 </div>
                 <small>{new Date(todo.date).toLocaleTimeString()}</small>
               </div>
