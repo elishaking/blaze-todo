@@ -125,4 +125,12 @@
       opacity: 1;
     }
   }
+
+  #bg {
+    position: fixed;
+    left: 0;
+    bottom: 2em;
+    width: 100vw;
+    text-align: center;
+  }
 }

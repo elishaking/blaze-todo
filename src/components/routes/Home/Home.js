@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './Home.scss';
 
+import bg from '../../../assets/images/bg.svg';
+
 export default class Home extends Component {
   state = {
     newTodoText: '',
@@ -85,6 +87,10 @@ export default class Home extends Component {
               </div>
             ))
           }
+        </div>
+
+        <div id="bg">
+          <img src={bg} alt="bg" />
         </div>
       </div>
     );
