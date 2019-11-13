@@ -19,7 +19,7 @@ export default class Home extends Component {
     if (savedTodos && savedTodos[key]) {
       this.setState({
         savedTodos: savedTodos,
-        todos: savedTodos[key]
+        todos: [...savedTodos[key]]
       });
     }
   }
@@ -47,7 +47,6 @@ export default class Home extends Component {
     this.saveTodo(newTodo);
 
     todos.push(newTodo);
-
     this.setState({
       todos,
       savedTodos,
@@ -64,13 +63,18 @@ export default class Home extends Component {
     } else {
       savedTodos[key] = [todo];
     }
-    localStorage.setItem("todos", JSON.stringify(savedTodos));
+    this.saveTodos();
+  };
+
+  saveTodos = () => {
+    localStorage.setItem("todos", JSON.stringify(this.state.savedTodos));
   };
 
   toggleDone = (index) => {
     const { todos } = this.state;
 
     todos[index].done = !todos[index].done;
+    this.saveTodos();
     this.setState({ todos });
   }
 
@@ -81,7 +85,7 @@ export default class Home extends Component {
   };
 
   render() {
-    const { todos } = this.state;
+    const { todos, newTodoText } = this.state;
 
     return (
       <div className="home container">
@@ -91,6 +95,7 @@ export default class Home extends Component {
               name="newTodoText"
               placeholder="New Todo"
               onChange={this.onChange}
+              value={newTodoText}
             />
             <input type="submit" value="Add" />
           </form>
@@ -98,30 +103,27 @@ export default class Home extends Component {
 
         <div className="todos">
           {
-            todos.map((_, index, mTodos) => {
-              const todo = mTodos[(mTodos.length - 1) - index];
-              return (
-                <div key={index} id={`todo-${index}`} className={`todo ${todo.show ? "show" : ""}`}>
-                  <div>
-                    <input type="checkbox"
-                      checked={todo.done}
-                      onChange={(e) => { this.toggleDone(index) }} />
+            todos.map((todo, index) => (
+              <div key={index} className="todo">
+                <div>
+                  <input type="checkbox"
+                    checked={todo.done}
+                    onChange={(e) => { this.toggleDone(index) }} />
 
-                    <p>{todo.text}</p>
+                  <p>{todo.text}</p>
 
-                    <p className="close" onClick={(e) => { this.deleteTodo(index) }}>x</p>
-                  </div>
-                  <small>{new Date(todo.date).toLocaleTimeString()}</small>
+                  <p className="close" onClick={(e) => { this.deleteTodo(index) }}>x</p>
                 </div>
-              );
-            })
+                <small>{new Date(todo.date).toLocaleTimeString()}</small>
+              </div>
+            ))
           }
         </div>
 
         <div id="bg">
           <img src={bg} alt="bg" />
         </div>
-      </div>
+      </div >
     );
   }
 }
