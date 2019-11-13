@@ -66,10 +66,12 @@
       justify-content: space-between;
       align-items: center;
       border-radius: 5px;
-      background-color: rgba($color: #2b4578, $alpha: .1);
+      // background-color: rgba($color: #2b4578, $alpha: .1);
+      background-color: #e9ecf1;
+      box-shadow: 0 0 30px rgba($color: #2b4578, $alpha: .2);
 
-      height: 0;
-      opacity: 0;
+      // height: 0;
+      // opacity: 0;
 
       padding: 1em 2em;
       margin-bottom: 1em;
@@ -120,10 +122,10 @@
       }
     }
 
-    .show {
-      height: 4em;
-      opacity: 1;
-    }
+    // .show {
+    //   height: 4em;
+    //   opacity: 1;
+    // }
   }
 
   #bg {
@@ -132,5 +134,6 @@
     bottom: 2em;
     width: 100vw;
     text-align: center;
+    z-index: -1;
   }
 }
