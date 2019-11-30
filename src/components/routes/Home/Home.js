@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './Home.scss';
 
 import bg from '../../../assets/images/bg.svg';
+import Todo from '../../Todo';
 
 export default class Home extends Component {
   state = {
@@ -66,6 +67,16 @@ export default class Home extends Component {
     this.saveTodos();
   };
 
+  deleteAndSaveTodo = (index) => {
+    const key = new Date().toDateString();
+
+    const { savedTodos } = this.state;
+    if (savedTodos[key]) {
+      savedTodos[key].splice(index, 1);
+    }
+    this.saveTodos();
+  }
+
   saveTodos = () => {
     localStorage.setItem("todos", JSON.stringify(this.state.savedTodos));
   };
@@ -81,6 +92,7 @@ export default class Home extends Component {
   deleteTodo = (index) => {
     const { todos } = this.state;
     todos.splice(index, 1);
+    this.deleteAndSaveTodo(index);
     this.setState({ todos });
   };
 
@@ -104,18 +116,11 @@ export default class Home extends Component {
         <div className="todos">
           {
             todos.map((todo, index) => (
-              <div key={index} className="todo">
-                <div>
-                  <input type="checkbox"
-                    checked={todo.done}
-                    onChange={(e) => { this.toggleDone(index) }} />
-
-                  <p>{todo.text}</p>
-
-                  <p className="close" onClick={(e) => { this.deleteTodo(index) }}>x</p>
-                </div>
-                <small>{new Date(todo.date).toLocaleTimeString()}</small>
-              </div>
+              <Todo
+                key={index}
+                todo={todo}
+                onChange={(e) => { this.toggleDone(index) }}
+                deleteTodo={(e) => { this.deleteTodo(index) }} />
             ))
           }
         </div>
