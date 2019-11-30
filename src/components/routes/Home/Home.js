@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { SortableElement, SortableContainer } from 'react-sortable-hoc';
+import arrayMove from 'array-move';
 import './Home.scss';
 
 import bg from '../../../assets/images/bg.svg';
@@ -119,6 +120,12 @@ export default class Home extends Component {
     this.setState({ todos });
   };
 
+  onSortEnd = ({ oldIndex, newIndex }) => {
+    this.setState(({ todos }) => ({
+      todos: arrayMove(todos, oldIndex, newIndex),
+    }));
+  };
+
   render() {
     const { todos, newTodoText } = this.state;
 
@@ -140,6 +147,7 @@ export default class Home extends Component {
           todos={todos}
           onChange={this.toggleDone}
           deleteTodo={this.deleteTodo}
+          onSortEnd={this.onSortEnd}
         />
         {/* <ul className="todos">
           {
