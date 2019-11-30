@@ -1,8 +1,31 @@
 import React, { Component } from 'react';
+import { SortableElement, SortableContainer } from 'react-sortable-hoc';
 import './Home.scss';
 
 import bg from '../../../assets/images/bg.svg';
 import Todo from '../../Todo';
+
+const TodoItem = SortableElement(({ todo, index, onChange, deleteTodo }) => (
+  <Todo
+    key={index}
+    todo={todo}
+    onChange={onChange}
+    deleteTodo={deleteTodo} />
+));
+
+const Todos = SortableContainer(({ todos, onChange, deleteTodo }) => (
+  <ul className="todos">
+    {
+      todos.map((todo, index) => (
+        <TodoItem
+          index={index}
+          todo={todo}
+          onChange={() => { onChange(index) }}
+          deleteTodo={() => { deleteTodo(index) }} />
+      ))
+    }
+  </ul>
+));
 
 export default class Home extends Component {
   state = {
@@ -113,7 +136,12 @@ export default class Home extends Component {
           </form>
         </div>
 
-        <div className="todos">
+        <Todos
+          todos={todos}
+          onChange={this.toggleDone}
+          deleteTodo={this.deleteTodo}
+        />
+        {/* <ul className="todos">
           {
             todos.map((todo, index) => (
               <Todo
@@ -123,7 +151,7 @@ export default class Home extends Component {
                 deleteTodo={(e) => { this.deleteTodo(index) }} />
             ))
           }
-        </div>
+        </ul> */}
 
         <div id="bg">
           <img src={bg} alt="bg" />
