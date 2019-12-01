@@ -1,12 +1,23 @@
 import React from 'react';
 
 export default function Todo({ todo, onChange, deleteTodo }) {
+  /** @param {React.MouseEvent<HTMLDivElement, MouseEvent>} e */
+  const toggleChecked = (e) => {
+    // @ts-ignore
+    e.target.classList.toggle('checked');
+    onChange();
+  };
+
   return (
     <li className="todo">
       <div>
-        <input type="checkbox"
-          checked={todo.done}
-          onChange={onChange} />
+        <label htmlFor="">
+          <input type="checkbox"
+            checked={todo.done}
+          // onChange={onChange} 
+          />
+          <div onClick={toggleChecked} className={`${todo.done ? "checked" : ""}`} ></div>
+        </label>
 
         <p>{todo.text}</p>
 

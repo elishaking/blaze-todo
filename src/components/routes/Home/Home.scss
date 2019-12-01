@@ -85,14 +85,38 @@
         align-items: center;
       }
 
-      input[type="checkbox"] {
-        margin-right: 1em;
-        margin-right: 1em;
-        width: 1em;
-        height: 1em;
-        font-size: 2em;
-        font-family: inherit;
-        -webkit-appearance: radio;
+      label {
+        position: relative;
+
+        input {
+          visibility: hidden;
+          position: absolute;
+
+          // margin-right: 1em;
+          width: 2.5em;
+          height: 2.5em;
+          // font-size: 2em;
+          // font-family: inherit;
+          // -webkit-appearance: radio;
+        }
+
+        div {
+          margin-right: 1.5em;
+          width: 2.5em;
+          height: 2.5em;
+          border-radius: 100%;
+          // background-color: #2b4578;
+          background-color: white;
+          border: 2px solid #2b4578;
+          transition: 0.3s ease-in-out;
+          cursor: pointer;
+        }
+
+        div:hover {
+          background-color: whitesmoke;
+        }
+
+
       }
 
       small {
@@ -136,4 +160,8 @@
     text-align: center;
     z-index: -1;
   }
+}
+
+.checked {
+  background-color: #2b4578 !important;
 }

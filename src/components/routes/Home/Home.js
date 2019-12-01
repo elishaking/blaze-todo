@@ -22,9 +22,7 @@ const Todos = SortableContainer(({ todos, onChange, deleteTodo }) => (
           index={index}
           todo={todo}
           onChange={() => { onChange(index) }}
-          deleteTodo={() => { deleteTodo(index) }}
-          lockAxis="y"
-          transitionDuration={0} />
+          deleteTodo={() => { deleteTodo(index) }} />
       ))
     }
   </ul>
@@ -150,6 +148,8 @@ export default class Home extends Component {
           onChange={this.toggleDone}
           deleteTodo={this.deleteTodo}
           onSortEnd={this.onSortEnd}
+          lockAxis="y"
+          pressDelay={500}
         />
         {/* <ul className="todos">
           {
