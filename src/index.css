@@ -24,13 +24,11 @@ code {
   align-items: center;
   border-radius: 5px;
   background-color: #e9ecf1;
-
   padding: 1em 2em;
   margin-bottom: 1em;
-  border: 0.7px solid rgba(43, 69, 120, 0.19);
+  border: 0.7px solid rgba(43, 69, 120, 0.2);
   overflow: hidden;
-
-  transition: all 0.3s ease-out;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
 }
 
 .todo div {
@@ -38,14 +36,30 @@ code {
   align-items: center;
 }
 
-.todo input[type=checkbox] {
-  margin-right: 1em;
-  margin-right: 1em;
-  width: 1em;
-  height: 1em;
-  font-size: 2em;
-  font-family: inherit;
-  -webkit-appearance: radio;
+.todo label {
+  position: relative;
+}
+
+.todo label input {
+  visibility: hidden;
+  position: absolute;
+  width: 2.5em;
+  height: 2.5em;
+}
+
+.todo label div {
+  margin-right: 1.5em;
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 100%;
+  background-color: white;
+  border: 2px solid #2b4578;
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.todo label div:hover {
+  background-color: whitesmoke;
 }
 
 .todo small {
@@ -65,8 +79,8 @@ code {
   border-radius: 0 5px 0 5px;
   cursor: pointer;
   border: 1px solid rgba(43, 69, 120, 0.2);
-  border-bottom: 1px solid rgba(43, 69, 120, 0.2);
-  border-left: 1px solid rgba(43, 69, 120, 0.2);
+  border-bottom: 1px solid rgba(43, 69, 120, 0.7);
+  border-left: 1px solid rgba(43, 69, 120, 0.7);
   transition: 0.3s ease-in-out;
 }
 
