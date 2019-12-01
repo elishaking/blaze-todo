@@ -14,7 +14,7 @@
         transition: 0.3s ease-in-out;
       }
 
-      input[type=text] {
+      input[type="text"] {
         padding-left: 0.3em;
         padding-bottom: 0.7em;
         border-bottom: 1px solid #2b4578;
@@ -24,26 +24,26 @@
         margin-right: 2em;
       }
 
-      input[type=text]:focus {
+      input[type="text"]:focus {
         border-width: 2px;
       }
 
-      input[type=submit] {
+      input[type="submit"] {
         color: white;
         background-color: #2b4578;
         border-radius: 5px;
-        box-shadow: 0 0 30px rgba($color: #000000, $alpha: .2);
+        box-shadow: 0 0 30px rgba($color: #000000, $alpha: 0.2);
         cursor: pointer;
       }
 
-      input[type=submit]:hover {
+      input[type="submit"]:hover {
         opacity: 0.7;
       }
 
       @media (max-width: 560px) {
         flex-direction: column;
 
-        input[type=text] {
+        input[type="text"] {
           margin-right: 0;
           width: 100%;
           max-width: none;
@@ -75,17 +75,17 @@
 
       padding: 1em 2em;
       margin-bottom: 1em;
-      border: 0.7px solid rgba($color: #2b4578, $alpha: .2);
+      border: 0.7px solid rgba($color: #2b4578, $alpha: 0.2);
       overflow: hidden;
 
-      transition: all 0.3s ease-out;
+      // transition: all 0.3s ease-out;
 
       div {
         display: flex;
         align-items: center;
       }
 
-      input[type=checkbox] {
+      input[type="checkbox"] {
         margin-right: 1em;
         margin-right: 1em;
         width: 1em;
@@ -111,9 +111,9 @@
         background: white;
         border-radius: 0 5px 0 5px;
         cursor: pointer;
-        border: 1px solid rgba($color: #2b4578, $alpha: .2);
-        border-bottom: 1px solid rgba($color: #2b4578, $alpha: .7);
-        border-left: 1px solid rgba($color: #2b4578, $alpha: .7);
+        border: 1px solid rgba($color: #2b4578, $alpha: 0.2);
+        border-bottom: 1px solid rgba($color: #2b4578, $alpha: 0.7);
+        border-left: 1px solid rgba($color: #2b4578, $alpha: 0.7);
         transition: 0.3s ease-in-out;
       }
 

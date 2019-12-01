@@ -22,7 +22,9 @@ const Todos = SortableContainer(({ todos, onChange, deleteTodo }) => (
           index={index}
           todo={todo}
           onChange={() => { onChange(index) }}
-          deleteTodo={() => { deleteTodo(index) }} />
+          deleteTodo={() => { deleteTodo(index) }}
+          lockAxis="y"
+          transitionDuration={0} />
       ))
     }
   </ul>
