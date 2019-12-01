@@ -3,30 +3,9 @@ import { SortableElement, SortableContainer } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import './Home.scss';
 
+import notificationSound from '../../notif.ogg';
 import bg from '../../../assets/images/bg.svg';
 import Todo from '../../Todo';
-
-const TodoItem = SortableElement(({ todo, index, onChange, deleteTodo }) => (
-  <Todo
-    key={index}
-    todo={todo}
-    onChange={onChange}
-    deleteTodo={deleteTodo} />
-));
-
-const Todos = SortableContainer(({ todos, onChange, deleteTodo }) => (
-  <ul className="todos">
-    {
-      todos.map((todo, index) => (
-        <TodoItem
-          index={index}
-          todo={todo}
-          onChange={() => { onChange(index) }}
-          deleteTodo={() => { deleteTodo(index) }} />
-      ))
-    }
-  </ul>
-));
 
 export default class Home extends Component {
   state = {
@@ -47,6 +26,8 @@ export default class Home extends Component {
         todos: [...savedTodos[key]]
       });
     }
+
+    this.notificationSound = new Audio(notificationSound);
   }
 
   onChange = (e) => {
@@ -107,6 +88,14 @@ export default class Home extends Component {
 
   toggleDone = (index) => {
     const { todos } = this.state;
+
+    if (!todos[index].done) {
+      if (!this.notificationSound.paused) {
+        this.notificationSound.pause();
+        this.notificationSound.currentTime = 0;
+      }
+      this.notificationSound.play();
+    }
 
     todos[index].done = !todos[index].done;
     this.saveTodos();
@@ -170,3 +159,25 @@ export default class Home extends Component {
     );
   }
 }
+
+const TodoItem = SortableElement(({ todo, index, onChange, deleteTodo }) => (
+  <Todo
+    key={index}
+    todo={todo}
+    onChange={onChange}
+    deleteTodo={deleteTodo} />
+));
+
+const Todos = SortableContainer(({ todos, onChange, deleteTodo }) => (
+  <ul className="todos">
+    {
+      todos.map((todo, index) => (
+        <TodoItem
+          index={index}
+          todo={todo}
+          onChange={() => { onChange(index) }}
+          deleteTodo={() => { deleteTodo(index) }} />
+      ))
+    }
+  </ul>
+));
