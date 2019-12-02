@@ -45,7 +45,7 @@ export default class Home extends Component {
   }
 
   loadOlderTodos = (savedTodos, key) => {
-    const todoKeys = Object.keys(savedTodos).filter(todoKey => todoKey !== key);
+    const todoKeys = Object.keys(savedTodos).filter(todoKey => todoKey !== key && savedTodos[todoKey].length > 0);
 
     const olderTodos = todoKeys.map((todoKey) => ({
       [todoKey]: savedTodos[todoKey]
@@ -96,15 +96,13 @@ export default class Home extends Component {
     this.saveTodos();
   };
 
-  deleteAndSaveTodo = (index) => {
-    const key = new Date().toDateString();
-
-    const { savedTodos } = this.state;
-    if (savedTodos[key]) {
-      savedTodos[key].splice(index, 1);
-    }
-    this.saveTodos();
-  }
+  // deleteAndSaveTodo = (index, key) => {
+  //   const { savedTodos } = this.state;
+  //   if (savedTodos[key]) {
+  //     savedTodos[key].splice(index, 1);
+  //   }
+  //   this.saveTodos();
+  // }
 
   saveTodos = () => {
     localStorage.setItem("todos", JSON.stringify(this.state.savedTodos));
@@ -135,11 +133,23 @@ export default class Home extends Component {
     this.setState({ [stateKey]: dateKey ? this.state.olderTodos : todos });
   }
 
-  deleteTodo = (index) => {
-    const { todos } = this.state;
-    todos.splice(index, 1);
-    this.deleteAndSaveTodo(index);
-    this.setState({ todos });
+  deleteTodo = (index, dateKey, todosIdx) => {
+    let todos;
+    if (dateKey) {
+      todos = this.state.olderTodos[todosIdx][dateKey];
+      todos.splice(index, 1);
+
+      if (todos.length === 0) this.state.olderTodos.splice(todosIdx, 1)
+
+      this.setState({ olderTodos: this.state.olderTodos });
+    } else {
+      todos = this.state.todos;
+      todos.splice(index, 1);
+      this.setState({ todos });
+    }
+    // const { todos } = this.state;
+
+    this.saveTodos();
   };
 
   onSortEnd = ({ oldIndex, newIndex }) => {
@@ -150,6 +160,7 @@ export default class Home extends Component {
 
   render() {
     const { todos, newTodoText, olderTodos } = this.state;
+    console.log(olderTodos);
 
     return (
       <div className="home container">
@@ -185,34 +196,38 @@ export default class Home extends Component {
           }
         </ul> */}
 
-        <div id="older-todos">
-          <h3>OLDER TODOS</h3>
+        {
+          olderTodos.length > 0 && (
+            <div id="older-todos">
+              <h3>OLDER TODOS</h3>
 
-          <div>
-            {
-              olderTodos.map((todoGroups, idx) => {
-                const key = Object.keys(todoGroups)[0];
-                const todos = todoGroups[key];
-                return (
-                  <div key={idx}>
-                    <h4>{key}</h4>
-                    <Todos
-                      dateKey={key}
-                      todosIdx={idx}
-                      todos={todos}
-                      onChange={this.toggleDone}
-                      deleteTodo={this.deleteTodo}
-                      shouldCancelStart={() => true}
-                    // onSortEnd={this.onSortEnd}
-                    // lockAxis="y"
-                    // pressDelay={500} 
-                    />
-                  </div>
-                )
-              })
-            }
-          </div>
-        </div>
+              <div>
+                {
+                  olderTodos.map((todoGroups, idx) => {
+                    const key = Object.keys(todoGroups)[0];
+                    const todos = todoGroups[key];
+                    return (
+                      <div key={idx}>
+                        <h4>{key}</h4>
+                        <Todos
+                          dateKey={key}
+                          todosIdx={idx}
+                          todos={todos}
+                          onChange={this.toggleDone}
+                          deleteTodo={this.deleteTodo}
+                          shouldCancelStart={() => true}
+                        // onSortEnd={this.onSortEnd}
+                        // lockAxis="y"
+                        // pressDelay={500} 
+                        />
+                      </div>
+                    )
+                  })
+                }
+              </div>
+            </div>
+          )
+        }
 
         <div id="bg">
           <img src={bg} alt="bg" />
