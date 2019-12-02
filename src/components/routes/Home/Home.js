@@ -32,7 +32,8 @@ export default class Home extends Component {
           savedTodos: savedTodos,
           todos
         });
-      } else if (olderTodos) {
+      }
+      if (olderTodos) {
         this.setState({
           savedTodos: savedTodos,
           olderTodos
@@ -113,7 +114,6 @@ export default class Home extends Component {
     let todos, stateKey;
     if (dateKey) {
       todos = this.state.olderTodos[todosIdx][dateKey];
-      console.log(this.state.olderTodos);
       stateKey = "olderTodos";
     } else {
       todos = this.state.todos;
@@ -132,7 +132,7 @@ export default class Home extends Component {
 
     todos[index].done = !todos[index].done;
     this.saveTodos();
-    this.setState({ [stateKey]: todos });
+    this.setState({ [stateKey]: dateKey ? this.state.olderTodos : todos });
   }
 
   deleteTodo = (index) => {
@@ -185,16 +185,16 @@ export default class Home extends Component {
           }
         </ul> */}
 
-        <div>
+        <div id="older-todos">
           <h3>OLDER TODOS</h3>
 
-          <ul className="todos">
+          <div>
             {
               olderTodos.map((todoGroups, idx) => {
                 const key = Object.keys(todoGroups)[0];
                 const todos = todoGroups[key];
                 return (
-                  <div>
+                  <div key={idx}>
                     <h4>{key}</h4>
                     <Todos
                       dateKey={key}
@@ -211,7 +211,7 @@ export default class Home extends Component {
                 )
               })
             }
-          </ul>
+          </div>
         </div>
 
         <div id="bg">
@@ -235,6 +235,7 @@ const Todos = SortableContainer(({ todos, onChange, deleteTodo, dateKey = undefi
     {
       todos.map((todo, index) => (
         <TodoItem
+          key={index}
           index={index}
           todo={todo}
           onChange={() => { onChange(index, dateKey, todosIdx) }}

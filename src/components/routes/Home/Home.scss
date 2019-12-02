@@ -53,6 +53,36 @@
     }
   }
 
+  #older-todos {
+
+    h3,
+    h4 {
+      width: 80vw;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      color: gray;
+    }
+
+    h3 {
+      margin-top: 3em;
+      margin-bottom: 2em;
+    }
+
+    h4 {
+      color: white;
+      background-color: #2b4578;
+      padding: 1em;
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba($color: #000000, $alpha: 0.2);
+      // font-weight: normal;
+    }
+
+    .todos {
+      margin-top: 2em;
+    }
+  }
+
   .todos {
     margin-top: 3em;
     width: 80vw;
