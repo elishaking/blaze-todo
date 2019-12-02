@@ -3,6 +3,7 @@ import { SortableElement, SortableContainer } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import './Home.scss';
 
+// @ts-ignore
 import notificationSound from '../../notif.ogg';
 import bg from '../../../assets/images/bg.svg';
 import Todo from '../../Todo';
@@ -11,7 +12,8 @@ export default class Home extends Component {
   state = {
     newTodoText: '',
     todos: [],
-    savedTodos: {}
+    savedTodos: {},
+    olderTodos: []
   };
 
   componentDidMount() {
@@ -19,16 +21,37 @@ export default class Home extends Component {
     if (!savedTodosStr) return;
 
     const savedTodos = JSON.parse(savedTodosStr);
+
     const key = new Date().toDateString();
-    if (savedTodos && savedTodos[key]) {
-      this.setState({
-        savedTodos: savedTodos,
-        todos: [...savedTodos[key]]
-      });
+    const todos = savedTodos[key];
+    const olderTodos = this.loadOlderTodos(savedTodos, key);
+
+    if (savedTodos) {
+      if (todos) {
+        this.setState({
+          savedTodos: savedTodos,
+          todos
+        });
+      } else if (olderTodos) {
+        this.setState({
+          savedTodos: savedTodos,
+          olderTodos
+        });
+      }
     }
 
     this.notificationSound = new Audio(notificationSound);
   }
+
+  loadOlderTodos = (savedTodos, key) => {
+    const todoKeys = Object.keys(savedTodos).filter(todoKey => todoKey !== key);
+
+    const olderTodos = todoKeys.map((todoKey) => ({
+      [todoKey]: savedTodos[todoKey]
+    }));
+
+    return olderTodos;
+  };
 
   onChange = (e) => {
     this.setState({
@@ -86,8 +109,18 @@ export default class Home extends Component {
     localStorage.setItem("todos", JSON.stringify(this.state.savedTodos));
   };
 
-  toggleDone = (index) => {
-    const { todos } = this.state;
+  toggleDone = (index, dateKey, todosIdx) => {
+    let todos, stateKey;
+    if (dateKey) {
+      todos = this.state.olderTodos[todosIdx][dateKey];
+      console.log(this.state.olderTodos);
+      stateKey = "olderTodos";
+    } else {
+      todos = this.state.todos;
+      stateKey = "todos";
+    }
+
+    // const { todos } = this.state;
 
     if (!todos[index].done) {
       if (!this.notificationSound.paused) {
@@ -99,7 +132,7 @@ export default class Home extends Component {
 
     todos[index].done = !todos[index].done;
     this.saveTodos();
-    this.setState({ todos });
+    this.setState({ [stateKey]: todos });
   }
 
   deleteTodo = (index) => {
@@ -116,7 +149,7 @@ export default class Home extends Component {
   };
 
   render() {
-    const { todos, newTodoText } = this.state;
+    const { todos, newTodoText, olderTodos } = this.state;
 
     return (
       <div className="home container">
@@ -152,6 +185,35 @@ export default class Home extends Component {
           }
         </ul> */}
 
+        <div>
+          <h3>OLDER TODOS</h3>
+
+          <ul className="todos">
+            {
+              olderTodos.map((todoGroups, idx) => {
+                const key = Object.keys(todoGroups)[0];
+                const todos = todoGroups[key];
+                return (
+                  <div>
+                    <h4>{key}</h4>
+                    <Todos
+                      dateKey={key}
+                      todosIdx={idx}
+                      todos={todos}
+                      onChange={this.toggleDone}
+                      deleteTodo={this.deleteTodo}
+                      shouldCancelStart={() => true}
+                    // onSortEnd={this.onSortEnd}
+                    // lockAxis="y"
+                    // pressDelay={500} 
+                    />
+                  </div>
+                )
+              })
+            }
+          </ul>
+        </div>
+
         <div id="bg">
           <img src={bg} alt="bg" />
         </div>
@@ -168,15 +230,15 @@ const TodoItem = SortableElement(({ todo, index, onChange, deleteTodo }) => (
     deleteTodo={deleteTodo} />
 ));
 
-const Todos = SortableContainer(({ todos, onChange, deleteTodo }) => (
+const Todos = SortableContainer(({ todos, onChange, deleteTodo, dateKey = undefined, todosIdx = undefined }) => (
   <ul className="todos">
     {
       todos.map((todo, index) => (
         <TodoItem
           index={index}
           todo={todo}
-          onChange={() => { onChange(index) }}
-          deleteTodo={() => { deleteTodo(index) }} />
+          onChange={() => { onChange(index, dateKey, todosIdx) }}
+          deleteTodo={() => { deleteTodo(index, dateKey, todosIdx) }} />
       ))
     }
   </ul>
